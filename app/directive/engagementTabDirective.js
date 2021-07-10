@@ -50,7 +50,9 @@ agentApp.directive("engagementTab", function ($filter, $rootScope, $uibModal, $q
             searchUsers: "=",
             schemaResponseNewTicket: "=",
             pieChartOption: '=',
-            integrationData: '='
+            integrationData: '=',
+            tag: '@',
+            dispositionTag: '@'
         },
         //templateUrl: 'app/views/profile/engagement-call.html',
         templateUrl: 'app/views/engagement/engagement-console.html',
@@ -262,6 +264,62 @@ agentApp.directive("engagementTab", function ($filter, $rootScope, $uibModal, $q
             scope.checkDisable = function (field) {
 
                 return scope.userAccessFields[field].editable;
+            };
+
+            scope.editDispositionSt = false;
+            scope.dispositionTag = null;
+            scope.dispositionTagOptions = [];
+
+            scope.editDispositionMode = function () {
+                console.error('start scope.editDispositionSt ' + scope.editDispositionSt);
+                if (!scope.editDispositionSt) {
+                    engagementService.listDispositionTags().then(function (response) {
+                        console.log("Load Disposition Tags response " + JSON.stringify(response));
+
+                        if (response && response.IsSuccess) {
+                            response.Result.forEach(function(dispositionTagOption) {
+                                if (dispositionTagOption.active == true) {
+                                    scope.dispositionTagOptions.push(dispositionTagOption.tag);
+                                }
+                            });
+                            console.log("Load Disposition Tags successfully " + JSON.stringify(scope.dispositionTagOptions));
+                            scope.editDispositionSt = !scope.editDispositionSt;
+                        } else {
+                            console.error('Fail To Load Disposition Tags');
+                            scope.showAlert('Load Disposition Tags', 'error', 'Fail To Load Disposition Tags');
+                        }
+                    }, function (err) {
+                        console.error('Fail To Load Disposition Tags ' + err);
+                        scope.showAlert('Load Disposition Tags', 'error', 'Fail To Load Disposition Tags');
+                    });
+                }
+                else {
+                    scope.editDispositionSt = !scope.editDispositionSt;
+                }
+            };
+
+            scope.upsertDispositionTag = function (dispositionTag) {
+                scope.dispositionTag = dispositionTag;
+                console.log("Saving Disposition Tag "+scope.dispositionTag);
+                if (scope.dispositionTag != null) {
+                    engagementService.upsertEngagementDispositionTag(scope.sessionId, scope.dispositionTag).then(function (response) {
+
+                        if (response && response.IsSuccess) {
+                            console.log("Disposition Tag "+scope.dispositionTag + ' Saved successfully for engagement id ' + scope.sessionId);
+                            scope.showAlert('Disposition Tag', 'success', 'Disposition Tag Saved successfully');
+                            scope.editDispositionMode();
+                        } else {
+                            console.error("Disposition Tag "+scope.dispositionTag + ' Saving Failed for engagement id ' + scope.sessionId);
+                            scope.showAlert('Disposition Tag', 'error', 'Fail To Save Disposition Tag');
+                        }
+                    }, function (err) {
+                        console.error("Disposition Tag "+scope.dispositionTag + ' Saving Failed for engagement id ' + scope.sessionId + ' error : ' + err);
+                        scope.showAlert('Disposition Tag', 'error', 'Fail To Save Disposition Tag');
+                    });
+                }
+                else {
+                    console.error("Disposition Tag is EMPTY!!!")
+                }
             };
 
             //--------------- shortcuts ----------------------------------

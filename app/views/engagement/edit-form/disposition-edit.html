@@ -1,0 +1,60 @@
+<div ng-show="editDispositionSt">
+    <div class="position-relative">
+        <div id="ticket" class="animated fixed-model-opacity-dispos">
+            <div class="container">
+                <div class="col-lg-offset-2 col-lg-8 col-md-8 col-xs-8 ">
+                    <div class="model-edit-ticket-wrapper">
+                        <!-- MODEL HEADER -->
+                        <div class="model-header">
+                            <div class="col-md-6">
+                                <div class="mode-left-icon">
+                                    <i class="veery-font-1-notepad"></i>
+                                </div>
+                                <div class="model-header-text">
+                                    Edit Disposition
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 ">
+                                <div class="model-btn-wrapper">
+                                    <div class="btn-warp ">
+                                <span class="btn btn-template-secondary btn-circle"
+                                      ng-click="editDispositionMode();"><i class="fa fa-times"></i>
+                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END MODEL HEADER -->
+
+                        <!-- MODEL HEADER -->
+                        <div class="model-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="dispositionTagSel">Disposition Reason Tag</label>
+                                    <select class="form-control" id="dispositionTagSel"
+                                            ng-model="dispositionTag">
+                                        <option ng-repeat="dispositionTagOpt in dispositionTagOptions"
+                                                value="{{dispositionTagOpt}}">
+                                            {{dispositionTagOpt}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- END MODEL BODY -->
+                        <!-- END MODEL HEADER -->
+                        <div class="model-footer-wrapper">
+                            <div class="model-btn-wrapper">
+                                <div class="btn-warp ">
+                                    <span class="btn btn-default" ng-click="upsertDispositionTag(dispositionTag)">Save</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -216,6 +216,34 @@ agentApp.factory("engagementService", function ($http, baseUrls,authService) {
         });
     };
 
+    var upsertEngagementDispositionTag = function (engagementId, tag) {
+
+        return $http({
+            method: 'put',
+            url: baseUrls.engagementUrl + "EngagementSession/" + engagementId + "/Tag/" + tag
+        }).then(function (response) {
+            if (response.data) {
+                return response.data;
+            } else {
+                return undefined;
+            }
+        });
+    };
+
+    var listDispositionTags = function () {
+
+        return $http({
+            method: 'get',
+            url: baseUrls.engagementUrl + "Tag"
+        }).then(function (response) {
+            if (response.data) {
+                return response.data;
+            } else {
+                return undefined;
+            }
+        });
+    };
+
 
     return {
         GetEngagementIdsByProfile: getEngagementIdsByProfile,
@@ -229,7 +257,9 @@ agentApp.factory("engagementService", function ($http, baseUrls,authService) {
         AddIsolatedEngagementSession: addIsolatedEngagementSession,
         AddEngagementSessionForProfile: addEngagementSessionForProfile,
         sendEmailAndSms:sendEmailAndSms,
-        getEngagementsByProfile:getEngagementsByProfile
+        getEngagementsByProfile:getEngagementsByProfile,
+        upsertEngagementDispositionTag:upsertEngagementDispositionTag,
+        listDispositionTags:listDispositionTags
     }
 });
 

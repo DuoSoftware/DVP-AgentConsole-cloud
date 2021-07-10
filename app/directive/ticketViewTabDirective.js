@@ -1337,7 +1337,8 @@ agentApp.directive("ticketTabView", function ($filter, $sce, $http, moment, tick
                             channel: "call",
                             channel_from: notifyData.channelFrom,
                             engagement_session: notifyData.sessionId,
-                            meta_data: notifyData.activeSession
+                            meta_data: notifyData.activeSession,
+                            tag: notifyData.tag
                         };
 
                         ticketService.UpdateTicketByReference(scope.ticket.reference, ticketRefData).then(function (response) {
